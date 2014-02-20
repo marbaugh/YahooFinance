@@ -59,8 +59,7 @@ class Stock:
             soup = BeautifulSoup(response.read())
             table = soup.findAll("table", {"class" : "yfnc_datamodoutline1"})
             for t in table:
-                print t
-                rows = table.findAll('tr')
+                rows = t.findAll('tr')
                 for row in rows:
                     table_headers = row.findAll('th')
                     table_data = row.findAll('td')
@@ -68,7 +67,7 @@ class Stock:
                         print (header.text)
                     for data in table_data:
                         print (data.text)
-  
+
     def print_put(self, symbol):
         print('put')
 
