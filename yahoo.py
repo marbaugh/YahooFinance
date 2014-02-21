@@ -66,18 +66,46 @@ class StockInfo:
         headers = list() #list to hold talbe headers
         values = list() #list to told table values
         table = soup.findAll("table", {"class" : "yfnc_datamodoutline1"})
+        table_num =0
         for t in table:
-            rows = t.findAll('tr')
-            for row in rows:
-                if not row.has_attr('valign'):
-                    table_headers = row.findAll('th')
-                    table_data = row.findAll('td')
-                    for header in table_headers:
-                        #headers.append(header.text)
-                        print header.text
-                    for data in table_data:
-                        #values.append(data.text)
-                        print data.text
+            if table_num < 1:
+                rows = t.findAll('tr')
+                for row in rows:
+                    if not row.has_attr('valign'):
+                        table_headers = row.findAll('th')
+                        table_data = row.findAll('td')
+                        for header in table_headers:
+                            #headers.append(header.text)
+                            print header.text
+                        for data in table_data:
+                            #values.append(data.text)
+                            print data.text
+            table_num += 1
+
+        return zip(headers, values)
+
+    def put_info(self):
+        """Call_info method parses the call options html from the options_url"""
+
+        soup = BeautifulSoup(self._get_url(self.options_url))
+        headers = list() #list to hold talbe headers
+        values = list() #list to told table values
+        table = soup.findAll("table", {"class" : "yfnc_datamodoutline1"})
+        table_num =0
+        for t in table:
+            if table_num > 0:
+                rows = t.findAll('tr')
+                for row in rows:
+                    if not row.has_attr('valign'):
+                        table_headers = row.findAll('th')
+                        table_data = row.findAll('td')
+                        for header in table_headers:
+                            #headers.append(header.text)
+                            print header.text
+                        for data in table_data:
+                            #values.append(data.text)
+                            print data.text
+            table_num += 1
 
         return zip(headers, values)
 
@@ -98,6 +126,7 @@ def main():
         print "{0}{1}".format(item[0], item[1])
 
     stock.call_info()
+    stock.put_info()
 
 
 if __name__ == '__main__':
