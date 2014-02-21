@@ -58,7 +58,29 @@ class StockInfo:
                     values.append(data.text)
 
         return zip(headers, values)
-    
+
+    def call_info(self):
+        """Call_info method parses the call options html from the options_url"""
+
+        soup = BeautifulSoup(self._get_url(self.options_url))
+        headers = list() #list to hold talbe headers
+        values = list() #list to told table values
+        table = soup.findAll("table", {"class" : "yfnc_datamodoutline1"})
+        for t in table:
+            rows = t.findAll('tr')
+            for row in rows:
+                if not row.has_attr('valign'):
+                    table_headers = row.findAll('th')
+                    table_data = row.findAll('td')
+                    for header in table_headers:
+                        #headers.append(header.text)
+                        print header.text
+                    for data in table_data:
+                        #values.append(data.text)
+                        print data.text
+
+        return zip(headers, values)
+
 def main():
     parser = argparse.ArgumentParser(description='Yahoo Finance Program')
     parser.add_argument('-s', '--stock', action='store',
@@ -74,6 +96,9 @@ def main():
     summary = stock.summary_info()
     for item in summary:
         print "{0}{1}".format(item[0], item[1])
+
+    stock.call_info()
+
 
 if __name__ == '__main__':
     main()
