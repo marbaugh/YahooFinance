@@ -85,7 +85,7 @@ class StockInfo:
         return zip(headers, values)
 
     def put_info(self):
-        """Call_info method parses the call options html from the options_url"""
+        """Call_info method parses the put options html from the options_url"""
 
         soup = BeautifulSoup(self._get_url(self.options_url))
         headers = list() #list to hold talbe headers
