@@ -10,7 +10,6 @@ class StockInfo:
     """Stock Info Class creates an instance of StockInfo
     
     Provides an init method to set the urls necessary to provide stock info
-
     and other methods to get the stocks summary info, call info, and put info
     
     """
@@ -72,24 +71,23 @@ class StockInfo:
                 rows = t.findAll('tr')
                 for row in rows:
                     if not row.has_attr('valign'):
+                        call = list() #list to hold call row values
                         table_headers = row.findAll('th')
                         table_data = row.findAll('td')
                         for header in table_headers:
-                            #headers.append(header.text)
-                            print header.text
+                            headers.append(header.text)
                         for data in table_data:
-                            #values.append(data.text)
-                            print data.text
+                            call.append(data.text)
+                        values.append(call)
             table_num += 1
-
-        return zip(headers, values)
+        return (headers, values)
 
     def put_info(self):
         """Call_info method parses the put options html from the options_url"""
 
         soup = BeautifulSoup(self._get_url(self.options_url))
         headers = list() #list to hold talbe headers
-        values = list() #list to told table values
+        values = list() #list to hold table values
         table = soup.findAll("table", {"class" : "yfnc_datamodoutline1"})
         table_num =0
         for t in table:
@@ -97,17 +95,16 @@ class StockInfo:
                 rows = t.findAll('tr')
                 for row in rows:
                     if not row.has_attr('valign'):
+                        put = list() #list to hold call row values
                         table_headers = row.findAll('th')
                         table_data = row.findAll('td')
                         for header in table_headers:
-                            #headers.append(header.text)
-                            print header.text
+                            headers.append(header.text)
                         for data in table_data:
-                            #values.append(data.text)
-                            print data.text
+                            put.append(data.text)
+                        values.append(put)
             table_num += 1
-
-        return zip(headers, values)
+        return (headers, values)
 
 def main():
     parser = argparse.ArgumentParser(description='Yahoo Finance Program')
@@ -119,15 +116,26 @@ def main():
     if args.stock is None:
         parser.error("Must specify a stock symbol")
 
-
     stock = StockInfo(args.stock)
     summary = stock.summary_info()
     for item in summary:
         print "{0}{1}".format(item[0], item[1])
 
-    stock.call_info()
-    stock.put_info()
-
-
+    call_headers, call_data = stock.call_info()
+    for header in call_headers:
+        print header
+    for row in call_data:
+        for data in row:
+            print "{0:8}\t".format(data),
+        print
+        
+    put_headers, put_data = stock.put_info()
+    for header in put_headers:
+        print header
+    for row in put_data:
+        for data in row:
+            print "{0:8}\t".format(data),
+        print
+            
 if __name__ == '__main__':
     main()
