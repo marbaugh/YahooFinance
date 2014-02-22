@@ -118,24 +118,33 @@ def main():
 
     stock = StockInfo(args.stock)
     summary = stock.summary_info()
+    f = open(args.stock+'Summary','w')
     for item in summary:
-        print "{0}{1}".format(item[0], item[1])
+        f.write("{0}{1}\n".format(item[0], item[1]))
+    f.close()
 
     call_headers, call_data = stock.call_info()
+    f = open(args.stock+'Calls','w')
     for header in call_headers:
-        print header
-    for row in call_data:
-        for data in row:
-            print "{0:8}\t".format(data),
-        print
-        
+        f.write('{0: <25}'.format(header))
+    f.write('\n')    
+    for call in call_data:
+        for data in call:
+            f.write('{0: <25}'.format(data))
+        f.write('\n')
+    f.close()
+
     put_headers, put_data = stock.put_info()
+    f = open(args.stock+'Puts','w')
     for header in put_headers:
-        print header
-    for row in put_data:
-        for data in row:
-            print "{0:8}\t".format(data),
-        print
-            
+        f.write('{0: <25}'.format(header))
+    f.write('\n')    
+    for put in put_data:
+        for data in put:
+            f.write('{0: <25}'.format(data))
+        f.write('\n')
+    f.write('\n')
+    f.close()
+
 if __name__ == '__main__':
     main()
