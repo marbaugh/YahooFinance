@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+""" Python application to get and record the summary, call and put
+information for a given stock from http://finance.yahoo.com
+
+"""
+_author__      = "Matthew Arbaugh"
+
 # Import the required libraries
 import argparse
 from urllib2 import urlopen, URLError, HTTPError
