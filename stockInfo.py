@@ -119,7 +119,10 @@ def main():
 
     """
 
-    parser = argparse.ArgumentParser(description='Yahoo Finance Program')
+    parser = argparse.ArgumentParser(
+            description='Application to get and record the summary, '
+            'call and put information for a given stock from '
+            'http://finance.yahoo.com')
     parser.add_argument('-s', '--stock', action='store',
 
         dest='stock', type=str, help='Stock Symbol used to gather information')
